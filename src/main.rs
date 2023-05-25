@@ -6,6 +6,7 @@ use actix_web::{error, get, web, middleware, App, HttpResponse, HttpServer, Resp
 use diesel::{prelude::*, r2d2};
 
 use ab_glyph::FontArc;
+extern crate shield_maker;
 use shield_maker::{Renderer, Metadata, Style, FontFamily};
 
 mod actions;
@@ -38,7 +39,7 @@ async fn get_badge(pool: web::Data<DbPool>, font: web::Data<FontArc>) -> Result<
                 font: font.get_ref().clone(),
                 font_family: FontFamily::Default,
                 label_color: None,
-                color: None,
+                color: Some("orange"),
             };
             let badge_output = Renderer::render(badge_meta);
             HttpResponse::Ok()

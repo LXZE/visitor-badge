@@ -9,7 +9,9 @@ edition = "2021"
 actix-web = "4"
 diesel = { version = "2.0.0", features = ["sqlite", "r2d2"] }
 dotenv = "0.15"
-env_logger = "*"
-log = "*"
+env_logger = "0.10"
+log = "0.4"
 serde = { version = "1.0", features = ["derive"] }
-serde_json = "*"
+serde_json = "1"
+shield-maker = { path = "src/shield-maker" }
+ab_glyph = "0.2"

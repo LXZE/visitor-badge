@@ -1,0 +1,3 @@
+[submodule "src/shield-maker"]
+	path = src/shield-maker
+	url = https://github.com/heyvito/shield-maker

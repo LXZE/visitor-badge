@@ -1,0 +1,1 @@
+docker build -t visitor_badge .

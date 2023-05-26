@@ -5,4 +5,4 @@ CREATE TABLE visitors (
 );
 
 INSERT INTO visitors
-VALUES ("lxze", 0);
+VALUES ("me", 0);

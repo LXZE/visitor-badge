@@ -19,7 +19,7 @@ type DbPool = r2d2::Pool<r2d2::ConnectionManager<SqliteConnection>>;
 async fn get_badge(pool: web::Data<DbPool>, font: web::Data<FontArc>) -> Result<impl Responder> {
     let visitor_info = web::block(move || {
         let mut conn = pool.get()?;
-        let user = "lxze".to_string();
+        let user = "me".to_string();
         actions::update_and_get_user_viewcount(&mut conn, &user)
             .map_err(|err| println!("{:?}", err)).ok();
         actions::get_user_viewcount(&mut conn, &user)
@@ -74,7 +74,7 @@ async fn main() -> std::io::Result<()> {
             .wrap(middleware::Logger::default())
             .service(get_badge)
     })
-    .bind(("127.0.0.1", 8080))?
+    .bind(("0.0.0.0", 8080))?
     .run()
     .await
 }

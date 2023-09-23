@@ -1,7 +1,7 @@
 # 0
 
 # 1. Build
-FROM rust:1.69 as build
+FROM rust:1.70 as build
 
 WORKDIR /usr/src/visitor-badge
 

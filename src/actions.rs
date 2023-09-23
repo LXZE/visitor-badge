@@ -18,7 +18,7 @@ pub fn get_user_viewcount(
     Ok(user)
 }
 
-pub fn update_and_get_user_viewcount(
+pub fn update_user_viewcount(
     conn: &mut SqliteConnection,
     user: &String,
 ) -> Result<usize, DbError> {

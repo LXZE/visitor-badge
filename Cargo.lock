@@ -1086,6 +1086,8 @@ dependencies = [
 [[package]]
 name = "shield-maker"
 version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9135f5b558585b36cb93dde87bcbc144c7b649bc5e54656318a5bd86b5db930c"
 dependencies = [
  "ab_glyph",
  "css-color-parser",

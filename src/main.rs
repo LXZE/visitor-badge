@@ -3,6 +3,7 @@ use std::fs;
 #[macro_use]
 extern crate diesel;
 use actix_web::{error, get, web, middleware, App, HttpResponse, HttpServer, Responder, Result};
+use serde::Deserialize;
 use diesel::{prelude::*, r2d2};
 
 use ab_glyph::FontArc;
@@ -15,12 +16,21 @@ mod schema;
 
 type DbPool = r2d2::Pool<r2d2::ConnectionManager<SqliteConnection>>;
 
+#[derive(Debug, Deserialize)]
+pub struct Request {
+   key: String,
+}
+
 #[get("/")]
-async fn get_badge(pool: web::Data<DbPool>, font: web::Data<FontArc>) -> Result<impl Responder> {
+async fn get_badge(pool: web::Data<DbPool>, font: web::Data<FontArc>, req: web::Query<Request>) -> Result<impl Responder> {
+    let badge_key = std::env::var("BADGE_KEY").expect("BADGE_KEY should be set");
+    if &req.key != &badge_key {
+        return Ok(HttpResponse::NotFound().body("error"));
+    }
     let visitor_info = web::block(move || {
         let mut conn = pool.get()?;
         let user = "me".to_string();
-        actions::update_and_get_user_viewcount(&mut conn, &user)
+        actions::update_user_viewcount(&mut conn, &user)
             .map_err(|err| println!("{:?}", err)).ok();
         actions::get_user_viewcount(&mut conn, &user)
     })
@@ -46,8 +56,6 @@ async fn get_badge(pool: web::Data<DbPool>, font: web::Data<FontArc>) -> Result<
                 .insert_header(("Content-Type", "image/svg+xml;charset=utf-8"))
                 .insert_header(("Cache-Control", "max-age=120, s-maxage=120"))
                 .body(badge_output)
-            // HttpResponse::Ok()
-            //     .body(count)
         },
         None => HttpResponse::NotFound().body("query error"),
     })
